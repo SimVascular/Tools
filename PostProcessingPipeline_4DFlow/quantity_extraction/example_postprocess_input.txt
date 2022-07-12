@@ -1,0 +1,38 @@
+# Input Text File for 4DMRI Postprocessing Pipeline
+
+# OPTIONS FOR ANALYSIS
+do_registration = False
+do_volumeremeshing = False
+do_resample4dmri = True
+do_qoiextraction = True
+centerline_already_extracted = True
+
+# USER-DEFINED VARIABLES
+# Path where solid PA models are located
+data_path = '/'
+# Desired prefix name for outputted files
+subject_id = ''
+
+# Path where Arterys processed vtk files are located (containing 4DMRI image/velocity)
+mr_vtk_dir = '/'
+# Prefix for the Arterys processed vtk files
+mr_subject_id = ''
+
+# For Registration: 
+# Templates files should be named with timepoint at which they were created
+dia_tmpl = 'mag1.vtp'
+sys_tmpl = 'mag11.vtp'
+# to determine registration
+max_iterations = 200 
+# timepoints in cardiac cycle, determined from 4DMRI scan
+total_timepoints = 20 
+
+# For Volume Remeshing
+remesh_edge_length = 0.25
+meshing_type = 'vmtk'
+
+# For Centerline Extraction - Locations along centerline to extract slice
+seg_locations = 0.1, 0.5, 0.75
+
+# For parallel computing, specify number of processors to use.
+procs = 4
