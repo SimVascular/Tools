@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+# author: Zachary Sexton
+#   date: 8-31-21
+
 from pip._internal import main as pipmain
 
 def install(package_name,version=None,inequality=None):
