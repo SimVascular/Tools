@@ -47,7 +47,7 @@ def install(package_name,version=None,inequality=None):
         return False
     # Checking logical package constraints (if applicable)
     if inequality is not None:
-        if inequality is not in ['==','<','>','<=','>=']:
+        if inequality not in ['==','<','>','<=','>=']:
             print('inequality must be one of the following: == < > <= >=')
             return False
         if version is None:
