@@ -16,7 +16,7 @@ except:
 try:
     import meshio
 except:
-    raise ImportError("Could not find meshio, please install by running" + \
+    raise ImportError("Could not find meshio, please install by running" +
                       " pip install meshio")
 
 
@@ -135,16 +135,17 @@ def convert_to_dolfin_xdmf(vtp_path, vtu_path, output_path, global_node_ID_name,
     vtp_global_node_ID = msh_vtp.point_data[global_node_ID_name] - 1
 
     # Map the values from the surface to the mesh
-    N = msh_vtp.cells["triangle"].shape[0]
-    cells = msh_vtp.cells["triangle"].flatten()
+    N = len(msh_vtp.cells[0].data)  # number of cells
+    cells = msh_vtp.cells[0].data.flatten()
     mapped_cells = vtp_global_node_ID[cells].reshape((N, 3))
-    cell_data = msh_vtp.cell_data["triangle"][face_ID_name]
+    cell_data = msh_vtp.cell_data[face_ID_name]
 
     # Write the boundary markers
     facet_path = output_path.replace(".xdmf", "_facet_markers.xdmf")
     meshio.write(facet_path, meshio.Mesh(points=msh_vtu.points,
-                                         cells={"triangle": mapped_cells},
-                                         cell_data={"triangle": {face_ID_name: cell_data}}))
+                                         cells=[("triangle", mapped_cells)],
+                                         cell_data={"triangle": cell_data},
+                                         field_data={"triangle": {face_ID_name: cell_data}}))
 
 
 def read_command_line():
@@ -171,9 +172,11 @@ def read_command_line():
     if not args.output_path.endswith(".xdmf"):
         raise NameError("The output path to have an .xdmf extension")
     if not args.vtp_path.endswith(".vtp"):
-        raise NameError("The input path to the VTP file has to have an .vtp extension")
+        raise NameError(
+            "The input path to the VTP file has to have an .vtp extension")
     if not args.vtu_path.endswith(".vtu"):
-        raise NameError("The input path to the VTU file has to have an .vtu extension")
+        raise NameError(
+            "The input path to the VTU file has to have an .vtu extension")
 
     return args.__dict__
 
